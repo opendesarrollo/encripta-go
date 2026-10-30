@@ -1,93 +1,135 @@
 # Encripta Go
 
+**Librería criptográfica One-Time Pad para Go**
 
+Encripta Go es un proyecto de código abierto orientado al desarrollo de una librería criptográfica en el lenguaje de programación **Go (Golang)**, basada en la técnica de cifrado **One-Time Pad (OTP)**.
 
-## Getting started
+El proyecto tiene como objetivo proporcionar una implementación sencilla, segura y documentada, fundamentada en operaciones matemáticas de cifrado, generación de claves criptográficamente seguras y administración del material criptográfico.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+Su desarrollo busca facilitar la integración de esta técnica en aplicaciones, servicios y proyectos de software, priorizando la correcta implementación de sus principios criptográficos y la prevención de errores que puedan comprometer la confidencialidad de la información.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+> **Estado del proyecto:** En desarrollo. La implementación criptográfica y la API pública aún no están disponibles.
 
-## Add your files
+## 1. Fundamento criptográfico
 
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+### ¿Qué es One-Time Pad?
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/luis.tec/encripta-go.git
-git branch -M main
-git push -uf origin main
-```
+**One-Time Pad (OTP)**, conocido en español como *cifrado de libreta de un solo uso*, es una técnica de criptografía simétrica que permite cifrar información mediante una clave secreta aleatoria cuya longitud debe ser igual a la del mensaje.
 
-## Integrate with your tools
+Su característica fundamental es que **cada clave, o segmento de ella, debe utilizarse una sola vez y nunca reutilizarse**.
 
-* [Set up project integrations](https://gitlab.com/luis.tec/encripta-go/-/settings/integrations)
+A diferencia de otros algoritmos de cifrado simétrico, One-Time Pad puede proporcionar una propiedad denominada **secreto perfecto**, siempre que se cumplan rigurosamente las condiciones matemáticas necesarias.
 
-## Collaborate with your team
+### Principios fundamentales
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+La seguridad de One-Time Pad depende de cuatro condiciones:
 
-## Test and Deploy
+1. **Aleatoriedad:** la clave debe ser verdaderamente aleatoria, uniforme e independiente del mensaje.
+2. **Longitud:** la clave debe contener suficiente material aleatorio para cubrir la totalidad del mensaje.
+3. **Uso único:** cada porción de la clave debe utilizarse exactamente una vez para cifrar.
+4. **Confidencialidad:** la clave debe permanecer secreta y ser conocida únicamente por las partes autorizadas.
 
-Use the built-in continuous integration in GitLab.
+El incumplimiento de cualquiera de estas condiciones puede comprometer las propiedades de seguridad del sistema.
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+## 2. Fundamento matemático
 
-***
+La implementación binaria de One-Time Pad puede realizarse utilizando la operación lógica **XOR (OR exclusivo)**.
 
-# Editing this README
+### Cifrado
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+`C = M ⊕ K`
 
-## Suggestions for a good README
+### Descifrado
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+`M = C ⊕ K`
 
-## Name
-Choose a self-explaining name for your project.
+Donde:
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+- **M:** mensaje original.
+- **K:** clave secreta.
+- **C:** mensaje cifrado.
+- **⊕:** operación XOR.
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+La operación XOR permite recuperar el mensaje original aplicando nuevamente la misma clave sobre el texto cifrado.
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+Esta propiedad constituye la base matemática de la variante binaria del sistema.
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+## 3. Secreto perfecto
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+El secreto perfecto es una propiedad de seguridad definida en la teoría de la información y formalizada por el matemático **Claude Shannon**.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+Un sistema One-Time Pad ideal proporciona secreto perfecto cuando las claves utilizadas son uniformemente aleatorias, independientes, secretas y no reutilizadas.
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Bajo estas condiciones, el texto cifrado no revela información sobre el mensaje original.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+Esta garantía matemática no depende del lenguaje de programación empleado, sino del cumplimiento de las condiciones criptográficas del sistema.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+**Importante:** la utilización de XOR o de un generador criptográficamente seguro no garantiza, por sí sola, el secreto perfecto.
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+## 4. Generación de claves criptográficas
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+Encripta Go contempla utilizar el paquete estándar `crypto/rand` de Go para generar material criptográfico.
 
-## License
-For open source projects, say how it is licensed.
+Este paquete proporciona acceso a un generador de números aleatorios criptográficamente seguro, adecuado para la generación de claves y otros valores secretos.
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+Se debe distinguir entre la seguridad computacional de un generador criptográfico y la aleatoriedad ideal requerida para demostrar matemáticamente el secreto perfecto.
+
+Por lo tanto, el uso de `crypto/rand` no constituye, por sí solo, una demostración de secreto perfecto.
+
+## 5. Administración de claves
+
+La correcta administración del material criptográfico es uno de los principales desafíos de One-Time Pad.
+
+El diseño de Encripta Go buscará contemplar los siguientes aspectos:
+
+- Generación segura del material criptográfico.
+- Prevención de reutilización accidental de claves.
+- Control del consumo de segmentos de claves.
+- Validación de longitudes de los mensajes y claves.
+- Protección de las claves contra accesos no autorizados.
+- Manejo adecuado de errores.
+- Separación de las responsabilidades de cifrado y administración de claves.
+
+La distribución segura de claves entre las partes involucradas deberá abordarse como un componente independiente del proceso de cifrado.
+
+## 6. Consideraciones de seguridad
+
+One-Time Pad ofrece confidencialidad bajo sus condiciones matemáticas ideales, pero **no proporciona por sí mismo autenticación ni integridad de los mensajes**.
+
+Esto significa que la información cifrada podría ser modificada por un tercero sin que el sistema detecte necesariamente la alteración.
+
+La implementación deberá considerar estas limitaciones y documentar los controles necesarios para utilizar la técnica de forma responsable.
+
+La librería no deberá considerarse apta para proteger información sensible en producción sin las pruebas, revisiones y validaciones de seguridad correspondientes.
+
+## 7. Principios de desarrollo
+
+Encripta Go se desarrollará siguiendo los siguientes principios:
+
+**Simplicidad:** mantener una API comprensible y evitar dependencias innecesarias.
+
+**Corrección:** implementar operaciones matemáticas correctas, validaciones explícitas y pruebas automatizadas.
+
+**Seguridad:** priorizar el manejo responsable de claves y la prevención de errores criptográficos.
+
+**Transparencia:** documentar las características, los supuestos de seguridad y las limitaciones de la implementación.
+
+**Mantenibilidad:** organizar el código para facilitar su revisión, mantenimiento y evolución.
+
+## 8. Estado del proyecto
+
+Actualmente, Encripta Go se encuentra en su etapa inicial de diseño.
+
+La implementación, las pruebas automatizadas y la documentación de la API se incorporarán conforme avance el desarrollo.
+
+No se ha publicado todavía una versión estable.
+
+## 9. Licencia
+
+Este proyecto se distribuye bajo la **Licencia Apache 2.0**.
+
+Consulte el archivo [LICENSE](LICENSE) para conocer los términos y condiciones de uso, modificación y distribución.
+
+---
+
+**Encripta Go** — Proyecto de código abierto para el desarrollo de herramientas criptográficas en Go.
