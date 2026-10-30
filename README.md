@@ -1,135 +1,86 @@
-# Encripta Go
+# Encripta-Go
 
-**Librería criptográfica One-Time Pad para Go**
+**Biblioteca criptográfica de código abierto para Go (Golang)**
 
-Encripta Go es un proyecto de código abierto orientado al desarrollo de una librería criptográfica en el lenguaje de programación **Go (Golang)**, basada en la técnica de cifrado **One-Time Pad (OTP)**.
+Encripta-Go es una biblioteca de código abierto desarrollada en Go, diseñada para facilitar la integración de soluciones criptográficas en aplicaciones y servicios de software mediante una arquitectura modular, extensible y fácil de utilizar.
 
-El proyecto tiene como objetivo proporcionar una implementación sencilla, segura y documentada, fundamentada en operaciones matemáticas de cifrado, generación de claves criptográficamente seguras y administración del material criptográfico.
+El proyecto nace con el propósito de acercar la criptografía al desarrollo de software, proporcionando herramientas reutilizables que permitan a los desarrolladores incorporar mecanismos de seguridad sin tener que implementar cada componente desde cero.
 
-Su desarrollo busca facilitar la integración de esta técnica en aplicaciones, servicios y proyectos de software, priorizando la correcta implementación de sus principios criptográficos y la prevención de errores que puedan comprometer la confidencialidad de la información.
+Su filosofía se fundamenta en la **simplicidad, la transparencia y la responsabilidad criptográfica**, priorizando implementaciones comprensibles, documentación técnica clara y buenas prácticas de desarrollo.
 
-> **Estado del proyecto:** En desarrollo. La implementación criptográfica y la API pública aún no están disponibles.
+Encripta-Go busca evolucionar como una biblioteca que permita construir aplicaciones con funcionalidades criptográficas de forma organizada, mantenible y consciente de los requisitos de seguridad.
 
-## 1. Fundamento criptográfico
+El proyecto forma parte de [OpenDesarrollo](https://opendesarrollo.com/), una iniciativa dedicada al desarrollo y publicación de herramientas tecnológicas de código abierto.
 
-### ¿Qué es One-Time Pad?
+## 1. Características principales
 
-**One-Time Pad (OTP)**, conocido en español como *cifrado de libreta de un solo uso*, es una técnica de criptografía simétrica que permite cifrar información mediante una clave secreta aleatoria cuya longitud debe ser igual a la del mensaje.
+- **Modularidad:** arquitectura organizada en paquetes independientes con responsabilidades claramente definidas.
+- **Simplicidad:** interfaces comprensibles que facilitan la integración en proyectos Go.
+- **Reutilización:** componentes diseñados para incorporarse en diferentes aplicaciones y servicios.
+- **Transparencia:** documentación de los mecanismos implementados, sus propiedades y limitaciones.
+- **Mantenibilidad:** estructura que facilita la revisión, evolución y ampliación de funcionalidades.
+- **Seguridad:** desarrollo orientado a la aplicación responsable de principios y buenas prácticas criptográficas.
+- **Código abierto:** distribución bajo la licencia Apache 2.0.
 
-Su característica fundamental es que **cada clave, o segmento de ella, debe utilizarse una sola vez y nunca reutilizarse**.
+## 2. Paquetes disponibles
 
-A diferencia de otros algoritmos de cifrado simétrico, One-Time Pad puede proporcionar una propiedad denominada **secreto perfecto**, siempre que se cumplan rigurosamente las condiciones matemáticas necesarias.
+Encripta-Go organiza sus funcionalidades en paquetes independientes. Cada uno cuenta con documentación técnica que describe su funcionamiento, parámetros, resultados, ejemplos prácticos y pruebas unitarias.
 
-### Principios fundamentales
+| Paquete | Descripción | Documentación |
+|---|---|---|
+| [`aleatorio`](aleatorio/) | Generación de bytes aleatorios criptográficamente seguros mediante `crypto/rand`. | [Ver documentación](aleatorio/README.md) |
+| [`otp`](otp/) | Cifrado y descifrado de información mediante One-Time Pad y operaciones XOR. | [Ver documentación](otp/README.md) |
 
-La seguridad de One-Time Pad depende de cuatro condiciones:
+## 3. Instalación
 
-1. **Aleatoriedad:** la clave debe ser verdaderamente aleatoria, uniforme e independiente del mensaje.
-2. **Longitud:** la clave debe contener suficiente material aleatorio para cubrir la totalidad del mensaje.
-3. **Uso único:** cada porción de la clave debe utilizarse exactamente una vez para cifrar.
-4. **Confidencialidad:** la clave debe permanecer secreta y ser conocida únicamente por las partes autorizadas.
+Para incorporar Encripta-Go como dependencia en un proyecto Go:
 
-El incumplimiento de cualquiera de estas condiciones puede comprometer las propiedades de seguridad del sistema.
+```bash
+go get github.com/opendesarrollo/encripta-go
+```
 
-## 2. Fundamento matemático
+**Módulo:** `github.com/opendesarrollo/encripta-go`
 
-La implementación binaria de One-Time Pad puede realizarse utilizando la operación lógica **XOR (OR exclusivo)**.
+Consulta la documentación de cada paquete para conocer sus funcionalidades y condiciones de utilización.
 
-### Cifrado
+## 4. Seguridad y consideraciones
 
-`C = M ⊕ K`
+Encripta-Go promueve el uso responsable de herramientas criptográficas mediante implementaciones documentadas y con responsabilidades definidas.
 
-### Descifrado
+La seguridad de una aplicación no depende únicamente de la biblioteca utilizada, sino también de su integración, configuración y los mecanismos de protección implementados.
 
-`M = C ⊕ K`
+Cada paquete documenta sus propiedades criptográficas, requisitos y limitaciones.
 
-Donde:
+> **Importante:** el proyecto se encuentra en desarrollo y no cuenta con una auditoría de seguridad que avale su utilización para proteger información sensible en producción.
 
-- **M:** mensaje original.
-- **K:** clave secreta.
-- **C:** mensaje cifrado.
-- **⊕:** operación XOR.
+## 5. Ecosistema OpenDesarrollo
 
-La operación XOR permite recuperar el mensaje original aplicando nuevamente la misma clave sobre el texto cifrado.
+Encripta-Go forma parte de [OpenDesarrollo](https://opendesarrollo.com/), una iniciativa de desarrollo y publicación de herramientas tecnológicas de código abierto.
 
-Esta propiedad constituye la base matemática de la variante binaria del sistema.
+Dentro de sus proyectos también se encuentra [**Encripta**](https://encripta.opendesarrollo.com/), una aplicación orientada al cifrado y descifrado de información para usuarios finales.
 
-## 3. Secreto perfecto
+Aunque comparten una identidad, ambos proyectos tienen propósitos diferentes: Encripta-Go proporciona componentes reutilizables para desarrolladores, mientras que Encripta ofrece una aplicación para usuarios finales.
 
-El secreto perfecto es una propiedad de seguridad definida en la teoría de la información y formalizada por el matemático **Claude Shannon**.
+**Enlaces relacionados:**
 
-Un sistema One-Time Pad ideal proporciona secreto perfecto cuando las claves utilizadas son uniformemente aleatorias, independientes, secretas y no reutilizadas.
+- [OpenDesarrollo](https://opendesarrollo.com/)
+- [Encripta — Sitio web](https://encripta.opendesarrollo.com/)
+- [Encripta — GitHub](https://github.com/opendesarrollo/Encripta)
 
-Bajo estas condiciones, el texto cifrado no revela información sobre el mensaje original.
+## 6. Estado del proyecto
 
-Esta garantía matemática no depende del lenguaje de programación empleado, sino del cumplimiento de las condiciones criptográficas del sistema.
+Encripta-Go es un proyecto de código abierto en evolución, con funcionalidades públicas disponibles y una arquitectura preparada para la incorporación progresiva de nuevos paquetes.
 
-**Importante:** la utilización de XOR o de un generador criptográficamente seguro no garantiza, por sí sola, el secreto perfecto.
+Actualmente no se ha declarado una versión estable.
 
-## 4. Generación de claves criptográficas
-
-Encripta Go contempla utilizar el paquete estándar `crypto/rand` de Go para generar material criptográfico.
-
-Este paquete proporciona acceso a un generador de números aleatorios criptográficamente seguro, adecuado para la generación de claves y otros valores secretos.
-
-Se debe distinguir entre la seguridad computacional de un generador criptográfico y la aleatoriedad ideal requerida para demostrar matemáticamente el secreto perfecto.
-
-Por lo tanto, el uso de `crypto/rand` no constituye, por sí solo, una demostración de secreto perfecto.
-
-## 5. Administración de claves
-
-La correcta administración del material criptográfico es uno de los principales desafíos de One-Time Pad.
-
-El diseño de Encripta Go buscará contemplar los siguientes aspectos:
-
-- Generación segura del material criptográfico.
-- Prevención de reutilización accidental de claves.
-- Control del consumo de segmentos de claves.
-- Validación de longitudes de los mensajes y claves.
-- Protección de las claves contra accesos no autorizados.
-- Manejo adecuado de errores.
-- Separación de las responsabilidades de cifrado y administración de claves.
-
-La distribución segura de claves entre las partes involucradas deberá abordarse como un componente independiente del proceso de cifrado.
-
-## 6. Consideraciones de seguridad
-
-One-Time Pad ofrece confidencialidad bajo sus condiciones matemáticas ideales, pero **no proporciona por sí mismo autenticación ni integridad de los mensajes**.
-
-Esto significa que la información cifrada podría ser modificada por un tercero sin que el sistema detecte necesariamente la alteración.
-
-La implementación deberá considerar estas limitaciones y documentar los controles necesarios para utilizar la técnica de forma responsable.
-
-La librería no deberá considerarse apta para proteger información sensible en producción sin las pruebas, revisiones y validaciones de seguridad correspondientes.
-
-## 7. Principios de desarrollo
-
-Encripta Go se desarrollará siguiendo los siguientes principios:
-
-**Simplicidad:** mantener una API comprensible y evitar dependencias innecesarias.
-
-**Corrección:** implementar operaciones matemáticas correctas, validaciones explícitas y pruebas automatizadas.
-
-**Seguridad:** priorizar el manejo responsable de claves y la prevención de errores criptográficos.
-
-**Transparencia:** documentar las características, los supuestos de seguridad y las limitaciones de la implementación.
-
-**Mantenibilidad:** organizar el código para facilitar su revisión, mantenimiento y evolución.
-
-## 8. Estado del proyecto
-
-Actualmente, Encripta Go se encuentra en su etapa inicial de diseño.
-
-La implementación, las pruebas automatizadas y la documentación de la API se incorporarán conforme avance el desarrollo.
-
-No se ha publicado todavía una versión estable.
-
-## 9. Licencia
+## 7. Licencia
 
 Este proyecto se distribuye bajo la **Licencia Apache 2.0**.
 
-Consulte el archivo [LICENSE](LICENSE) para conocer los términos y condiciones de uso, modificación y distribución.
+Consulta el archivo [LICENSE](LICENSE) para conocer los términos y condiciones de uso, modificación y distribución.
 
 ---
 
-**Encripta Go** — Proyecto de código abierto para el desarrollo de herramientas criptográficas en Go.
+**Encripta-Go** · Un proyecto de [OpenDesarrollo](https://opendesarrollo.com/).
+
+[Repositorio oficial en GitHub](https://github.com/opendesarrollo/encripta-go)
